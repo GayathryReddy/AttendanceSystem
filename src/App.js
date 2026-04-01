@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  // 🔥 Keep user logged in after refresh
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{
+      fontFamily: "Segoe UI",
+      backgroundColor: "#f1f5f9",
+      minHeight: "100vh",
+      margin: 0
+    }}>
+
+      {/* 🔐 LOGIN OR DASHBOARD */}
+      {user ? (
+        <Dashboard user={user} />
+      ) : (
+        <Login onLogin={setUser} />
+      )}
+
     </div>
   );
 }
